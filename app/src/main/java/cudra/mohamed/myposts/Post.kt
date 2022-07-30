@@ -16,11 +16,7 @@ data class Comment(
 )
 
 //Generic functions - takes in any type without specificifying
-fun <T>comparePosts(item1:T, item2:T):T{
-    //Do something
-    return item1
-}
-
-fun main(){
-
-}
+//fun <T>comparePosts(item1:T, item2:T):T{
+//    //Do something
+//    return item1
+//}
