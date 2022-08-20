@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import cudra.mohamed.myposts.databinding.ActivityCommentsBinding
-import okhttp3.Request
-import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class CommentsActivity : AppCompatActivity() {
     var postId=0
+    var comments=0
     lateinit var binding: ActivityCommentsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +20,7 @@ class CommentsActivity : AppCompatActivity() {
         obtainPostId()
         fetchPostId()
         setupToolbar()
+        fetchComments()
     }
     fun obtainPostId(){
         postId=intent.extras?.getInt("POST_ID")?:0  //elvis operator(if expretion is null it assigns the variable on the left else the right
@@ -50,41 +50,21 @@ class CommentsActivity : AppCompatActivity() {
     }
     fun fetchComments(){
         var apiClient=ApiClient.buildApiCLient((ApiInterface::class.java))
-        var request=apiClient.getComments()
-        request.enqueue(object :Call<List<Comment>>{
-            override fun clone(): Call<List<Comment>> {
-                TODO("Not yet implemented")
+        var request=apiClient.getComments(comments)
+        request.enqueue(object :Callback<List<Comment>>{
+            override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
+                if(response.isSuccessful){
+                    var commentss=response.body()?: emptyList()
+                    Toast.makeText(baseContext,"fetched ${commentss!!.size} comments",Toast.LENGTH_LONG).show()
+                    binding.rvComments.layoutManager= LinearLayoutManager(baseContext)
+                    binding.rvComments.adapter= CommentsRVAdapter(commentss)
+                }
             }
 
-            override fun execute(): Response<List<Comment>> {
-                TODO("Not yet implemented")
-            }
-
-            override fun enqueue(callback: Callback<List<Comment>>) {
-                TODO("Not yet implemented")
-            }
-
-            override fun isExecuted(): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override fun cancel() {
-                TODO("Not yet implemented")
-            }
-
-            override fun isCanceled(): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override fun request(): Request {
-                TODO("Not yet implemented")
-            }
-
-            override fun timeout(): Timeout {
-                TODO("Not yet implemented")
+            override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
+                Toast.makeText(baseContext,t.message,Toast.LENGTH_LONG).show()
             }
         })
-
     }
 
 }

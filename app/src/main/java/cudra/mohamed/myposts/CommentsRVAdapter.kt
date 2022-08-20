@@ -1,5 +1,6 @@
 package cudra.mohamed.myposts
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,13 +13,19 @@ class CommentsRVAdapter (var commentsList:List<Comment>):RecyclerView.Adapter<Co
     }
 
     override fun onBindViewHolder(holder: CommentsViewHolder, position: Int) {
-        var currentPost=commentsList.get(position)
+        var currentComment=commentsList.get(position)
         with(holder.binding){
-            tvPostIdComment.text=currentPost.postId.toString()
-            tvIdComment.text=currentPost.id.toString()
-            tvNameComment.text=currentPost.name
-            tvEmailComment.text=currentPost.email
-            tvBodyComment.text=currentPost.body
+            tvPostIdComment.text=currentComment.postId.toString()
+            tvIdComment.text=currentComment.id.toString()
+            tvNameComment.text=currentComment.name
+            tvEmailComment.text=currentComment.email
+            tvBodyComment.text=currentComment.body
+//            var context=holder.itemView.context
+//            mvcComments.setOnClickListener {
+//                val intent= Intent(context,CommentsActivity::class.java)
+//                intent.putExtra("POST_ID",currentComment.id)
+//                context.startActivity(intent)
+//            }
         }
     }
 
