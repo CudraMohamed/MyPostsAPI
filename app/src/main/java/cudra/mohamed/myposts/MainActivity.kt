@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         request.enqueue(object : Callback<List<Post>> {
             override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
                 if(response.isSuccessful){
-                    var posts=response.body()
+                    var posts=response.body()?: emptyList() //elvis operator
                     Toast.makeText(baseContext,"fetched ${posts!!.size} posts",Toast.LENGTH_LONG).show()
                     binding.rvAdapt.layoutManager=LinearLayoutManager(baseContext)
                     binding.rvAdapt.adapter= PostRvAdapter(posts)
@@ -32,8 +32,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Post>>, t: Throwable) {
-
+                Toast.makeText(baseContext,t.message,Toast.LENGTH_LONG).show()
             }
         })
     }
+//    fun displayPost(){
+//        binding.rvAdapt.layoutManager=LinearLayoutManager(this)
+//        var post=PostRvAdapter
+//
+//    }
 }
