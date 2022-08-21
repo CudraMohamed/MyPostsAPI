@@ -49,15 +49,14 @@ class CommentsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
     fun fetchComments(){
-        var apiClient=ApiClient.buildApiCLient((ApiInterface::class.java))
-        var request=apiClient.getComments(comments)
+        var retro=ApiClient.buildApiCLient((ApiInterface::class.java))
+        var request=retro.getComments(postId)
         request.enqueue(object :Callback<List<Comment>>{
             override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
                 if(response.isSuccessful){
                     var commentss=response.body()?: emptyList()
-                    Toast.makeText(baseContext,"fetched ${commentss!!.size} comments",Toast.LENGTH_LONG).show()
-                    binding.rvComments.layoutManager= LinearLayoutManager(baseContext)
-                    binding.rvComments.adapter= CommentsRVAdapter(commentss)
+                        displayComments(commentss)
+
                 }
             }
 
@@ -65,6 +64,11 @@ class CommentsActivity : AppCompatActivity() {
                 Toast.makeText(baseContext,t.message,Toast.LENGTH_LONG).show()
             }
         })
+    }
+    fun displayComments(commentList:List<Comment>){
+        val commentsAdapter=CommentsRVAdapter(commentList)
+        binding.rvComments.layoutManager=LinearLayoutManager(this)
+        binding.rvComments.adapter=commentsAdapter
     }
 
 }

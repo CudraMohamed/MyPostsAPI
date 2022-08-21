@@ -36,9 +36,4 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-//    fun displayPost(){
-//        binding.rvAdapt.layoutManager=LinearLayoutManager(this)
-//        var post=PostRvAdapter
-//
-//    }
 }
